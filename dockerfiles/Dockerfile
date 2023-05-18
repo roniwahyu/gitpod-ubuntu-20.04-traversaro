@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.title="Traversaro's Ubuntu 20.04 blank image with VNC support"
 LABEL org.opencontainers.image.description="Infrastructure for running grasping experiments with the iCub humanoid in Gazebo"
 LABEL org.opencontainers.image.source="https://github.com/traversaro/gitpod-ubuntu-20.04"
@@ -71,6 +71,14 @@ RUN chmod +x /usr/bin/start-vnc-session.sh && \
 
 # Manage ports
 EXPOSE 5901 6080 10000/tcp 10000/udp
+
+#install xrdp
+RUN apt install xrdp -y
+RUN ufw allow from 0.0.0.0/0 to any port 3389
+
+#install google chrome
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt install ./google-chrome-stable_current_amd64.deb
 
 # Clean up unnecessary installation products
 RUN rm -Rf /var/lib/apt/lists/*
